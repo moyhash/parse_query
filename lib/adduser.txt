@@ -1,0 +1,49 @@
+import 'package:flutter/material.dart';
+import 'package:parse_server_sdk/parse_server_sdk.dart';
+
+
+
+
+@protected
+void setState(
+VoidCallback fn
+)
+
+
+final navigatorKey = GlobalKey<NavigatorState>();
+
+final controlName = TextEditingController();
+final controlAge = TextEditingController();
+final controlEmail = TextEditingController();
+final controlPhone = TextEditingController();
+
+void addUser() async {
+  if (controlName.text.trim().isEmpty) {
+    ScaffoldMessenger.of(navigatorKey.currentContext!)
+        .showSnackBar(const SnackBar(
+      content: Text("Empty title"),
+      duration: Duration(seconds: 2),
+    ));
+    return;
+  }
+  await saveUser(controlName.text, int.parse(controlAge.text),
+      controlEmail.text, controlPhone.text);
+  setState(() {
+    controlName.clear();
+    controlAge.clear();
+    controlEmail.clear();
+    controlPhone.clear();
+  });
+}
+
+
+Future<void> saveUser(String name, int age, String email, String phone) async {
+  //await Future.delayed(Duration(seconds: 1), () {});
+  final user = ParseObject('Employee')
+    ..set('name', name)
+    ..set('age', age)
+    ..set('email', email)
+    ..set('phone', phone);
+  await user.save();
+}
+

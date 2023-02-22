@@ -1,0 +1,18 @@
+
+
+  void userRegistration() async {
+    final name = controlName.text.trim();
+    final age = controlAge.text.trim();
+    final email = controlEmail.text.trim();
+    final phone = controlPhone.text.trim();
+
+    final user = ParseUser.createUser(name, age, email, phone);
+
+    var response = await user.signUp();
+
+    if (response.success) {
+      showSuccess();
+    } else {
+      showError(response.error!.message);
+    }
+  }
